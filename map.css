@@ -1,0 +1,211 @@
+/* Map Container */
+.map-container {
+    flex: 1;
+    position: relative;
+    background: #e5e7eb;
+}
+
+#map {
+    height: 100%;
+    width: 100%;
+    background: #f3f4f6;
+}
+
+/* Leaflet Customizations */
+.leaflet-container {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.leaflet-popup-content-wrapper {
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    border: 1px solid #e5e7eb;
+}
+
+.leaflet-popup-content {
+    margin: 12px 16px;
+    line-height: 1.5;
+}
+
+.leaflet-popup-tip {
+    background: white;
+    border: 1px solid #e5e7eb;
+}
+
+/* Custom Markers */
+.custom-marker {
+    background: #3b82f6;
+    border: 3px solid white;
+    border-radius: 50%;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    cursor: pointer;
+}
+
+.custom-marker.downtown {
+    background: #dc2626;
+}
+
+.custom-marker.uptown {
+    background: #059669;
+}
+
+.custom-marker.residential {
+    background: #7c3aed;
+}
+
+.custom-marker.commercial {
+    background: #ea580c;
+}
+
+/* Zone Overlays */
+.zone-overlay {
+    stroke: #374151;
+    stroke-width: 2;
+    stroke-opacity: 0.8;
+    fill-opacity: 0.3;
+    cursor: pointer;
+}
+
+.zone-overlay.residential {
+    fill: #fef3c7;
+    stroke: #f59e0b;
+}
+
+.zone-overlay.commercial {
+    fill: #ddd6fe;
+    stroke: #8b5cf6;
+}
+
+.zone-overlay.mixed-use {
+    fill: #d1fae5;
+    stroke: #10b981;
+}
+
+.zone-overlay.industrial {
+    fill: #fee2e2;
+    stroke: #ef4444;
+}
+
+.zone-overlay.parks {
+    fill: #dcfce7;
+    stroke: #22c55e;
+}
+
+.zone-overlay:hover {
+    fill-opacity: 0.5;
+    stroke-width: 3;
+}
+
+/* Map Loading */
+.map-loading {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    text-align: center;
+    z-index: 1000;
+}
+
+.map-loading h3 {
+    margin-bottom: 1rem;
+    color: #374151;
+}
+
+.map-loading .spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid #f3f4f6;
+    border-top: 4px solid #3b82f6;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 0 auto;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Map Legend */
+.map-legend {
+    position: absolute;
+    bottom: 1rem;
+    left: 1rem;
+    background: white;
+    padding: 1rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    border: 1px solid #e5e7eb;
+    font-size: 0.875rem;
+    max-width: 200px;
+    z-index: 1000;
+}
+
+.map-legend h4 {
+    margin-bottom: 0.5rem;
+    color: #374151;
+    font-weight: 600;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0.25rem;
+}
+
+.legend-color {
+    width: 16px;
+    height: 16px;
+    border-radius: 3px;
+    margin-right: 0.5rem;
+    border: 1px solid #d1d5db;
+}
+
+.legend-item.residential .legend-color {
+    background: #fef3c7;
+    border-color: #f59e0b;
+}
+
+.legend-item.commercial .legend-color {
+    background: #ddd6fe;
+    border-color: #8b5cf6;
+}
+
+.legend-item.mixed-use .legend-color {
+    background: #d1fae5;
+    border-color: #10b981;
+}
+
+.legend-item.industrial .legend-color {
+    background: #fee2e2;
+    border-color: #ef4444;
+}
+
+.legend-item.parks .legend-color {
+    background: #dcfce7;
+    border-color: #22c55e;
+}
+
+/* Mobile Map Adjustments */
+@media (max-width: 768px) {
+    .map-legend {
+        bottom: 0.5rem;
+        left: 0.5rem;
+        padding: 0.75rem;
+        font-size: 0.8rem;
+        max-width: 150px;
+    }
+    
+    .legend-color {
+        width: 12px;
+        height: 12px;
+    }
+    
+    .map-loading {
+        padding: 1.5rem;
+    }
+  }
