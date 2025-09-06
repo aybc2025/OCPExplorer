@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OCP Explorer - New Westminster</title>
+    
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/map.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <h1>OCP Explorer</h1>
+            <p>New Westminster Official Community Plan</p>
+        </div>
+    </header>
+
+    <!-- Main Application -->
+    <main class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-content">
+                <h2>Property Information</h2>
+                <div id="property-info">
+                    <p class="placeholder-text">Click on the map to view property details</p>
+                </div>
+                
+                <div class="quick-actions">
+                    <h3>Quick Navigation</h3>
+                    <button class="action-btn" onclick="centerMap()">Center Map</button>
+                    <button class="action-btn" onclick="showDowntown()">Downtown</button>
+                    <button class="action-btn" onclick="showUptown()">Uptown</button>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Map Container -->
+        <div class="map-container">
+            <div id="map"></div>
+            
+            <!-- Map Controls -->
+            <div class="map-controls">
+                <button class="control-btn" onclick="toggleLayers()">
+                    <span>🗂️</span> Layers
+                </button>
+                <button class="control-btn" onclick="searchLocation()">
+                    <span>🔍</span> Search
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>Based on New Westminster Official Community Plan (2017) • Created for Urban Planners</p>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="js/map.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>
