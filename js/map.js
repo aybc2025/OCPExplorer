@@ -75,51 +75,85 @@ function initializeMap() {
     }
 }
 
-// Add New Westminster city boundary
-// Add New Westminster city boundary with accurate coordinates
+// Add New Westminster city boundary with much more accurate coordinates
 function addCityBoundary() {
-    // More accurate city boundary coordinates based on geographic features
-    // Main city area (excluding Queensborough)
+    // Main city boundary following actual municipal limits
+    // Based on Fraser River, Brunette River, and neighboring municipalities
     const mainCityBoundary = [
-        [49.2320, -122.9200], // North boundary near Brunette River
-        [49.2280, -122.8950], // Northeast near Coquitlam
-        [49.2250, -122.8800], // East boundary
-        [49.2150, -122.8750], // Southeast boundary
-        [49.2050, -122.8850], // Near Fraser River bend
-        [49.1980, -122.9000], // South along Fraser River
-        [49.1950, -122.9150], // Southwest Fraser River
-        [49.1980, -122.9350], // West along Fraser River
-        [49.2100, -122.9450], // Northwest boundary
-        [49.2200, -122.9300], // North boundary continuation
-        [49.2320, -122.9200]  // Close polygon
+        // Starting from northwest, following Brunette River
+        [49.2330, -122.9180], // Northwest near Brunette River
+        [49.2310, -122.9050], // Along Brunette River
+        [49.2280, -122.8920], // Brunette River bend
+        [49.2260, -122.8850], // Near Coquitlam border
+        [49.2240, -122.8820], // East boundary with Coquitlam
+        [49.2200, -122.8800], // Southeast near Sapperton
+        [49.2150, -122.8810], // East boundary continuation
+        [49.2100, -122.8830], // Curving toward Fraser River
+        [49.2050, -122.8880], // Near Fraser River
+        [49.2020, -122.8920], // Along Fraser River
+        [49.2000, -122.8980], // Fraser River bend
+        [49.1980, -122.9050], // South along Fraser River
+        [49.1960, -122.9120], // Fraser River curve
+        [49.1950, -122.9200], // Southwest Fraser River
+        [49.1960, -122.9280], // West along Fraser River
+        [49.1980, -122.9350], // Fraser River westward
+        [49.2020, -122.9420], // Northwest along Fraser River
+        [49.2060, -122.9450], // North along river
+        [49.2100, -122.9430], // River bend north
+        [49.2140, -122.9400], // Continuing north
+        [49.2180, -122.9350], // West boundary with Burnaby
+        [49.2220, -122.9320], // North boundary
+        [49.2260, -122.9280], // Northwest boundary
+        [49.2300, -122.9230], // North toward Brunette
+        [49.2330, -122.9180]  // Close polygon at start
     ];
     
-    // Queensborough area (part of New Westminster on Lulu Island)
+    // Queensborough area on Lulu Island (more accurate)
     const queensboroughBoundary = [
-        [49.1850, -122.9500], // Northwest of Lulu Island
-        [49.1900, -122.9200], // Northeast area
-        [49.1750, -122.9150], // Southeast area  
-        [49.1700, -122.9400], // Southwest area
-        [49.1850, -122.9500]  // Close polygon
+        [49.1880, -122.9520], // Northwest Lulu Island
+        [49.1920, -122.9350], // Northeast area
+        [49.1900, -122.9250], // East boundary
+        [49.1860, -122.9200], // Southeast
+        [49.1800, -122.9230], // South boundary
+        [49.1780, -122.9300], // Southwest
+        [49.1770, -122.9400], // West boundary
+        [49.1800, -122.9480], // Northwest boundary
+        [49.1840, -122.9520], // North boundary
+        [49.1880, -122.9520]  // Close polygon
     ];
     
     // Add main city boundary
     L.polygon(mainCityBoundary, {
-        color: '#3b82f6',
+        color: '#2563eb',
         weight: 3,
-        opacity: 0.8,
-        fillOpacity: 0.1,
-        dashArray: '10, 10'
-    }).addTo(map).bindPopup('<h3>New Westminster - Main City</h3><p>City boundaries following Fraser River, Brunette River, and municipal limits</p>');
+        opacity: 0.9,
+        fillOpacity: 0.15,
+        dashArray: '8, 12'
+    }).addTo(map).bindPopup(`
+        <div style="text-align: center;">
+            <h3 style="margin-bottom: 8px; color: #1e40af;">New Westminster</h3>
+            <p style="margin: 4px 0; font-size: 14px;"><strong>Main City Area</strong></p>
+            <p style="margin: 4px 0; font-size: 12px;">Following Fraser River, Brunette River</p>
+            <p style="margin: 4px 0; font-size: 12px;">and municipal boundaries</p>
+            <p style="margin: 8px 0 4px 0; font-size: 11px; color: #6b7280;">Area: 15.6 km²</p>
+        </div>
+    `);
     
     // Add Queensborough boundary
     L.polygon(queensboroughBoundary, {
-        color: '#3b82f6',
+        color: '#2563eb',
         weight: 3,
-        opacity: 0.8,
-        fillOpacity: 0.1,
-        dashArray: '10, 10'
-    }).addTo(map).bindPopup('<h3>New Westminster - Queensborough</h3><p>Part of New Westminster located on Lulu Island</p>');
+        opacity: 0.9,
+        fillOpacity: 0.15,
+        dashArray: '8, 12'
+    }).addTo(map).bindPopup(`
+        <div style="text-align: center;">
+            <h3 style="margin-bottom: 8px; color: #1e40af;">Queensborough</h3>
+            <p style="margin: 4px 0; font-size: 14px;"><strong>Part of New Westminster</strong></p>
+            <p style="margin: 4px 0; font-size: 12px;">Located on Lulu Island</p>
+            <p style="margin: 4px 0; font-size: 12px;">Connected by Queensborough Bridge</p>
+        </div>
+    `);
 }
 
 // Add key location markers
