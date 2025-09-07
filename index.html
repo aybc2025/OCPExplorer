@@ -31,13 +31,22 @@
                     <p class="placeholder-text">Click on the map to view property details</p>
                 </div>
                 
-                <div class="quick-actions">
-                    <h3>Quick Navigation</h3>
-                    <button class="action-btn" onclick="centerMap()">Center Map</button>
-                    <button class="action-btn" onclick="showDowntown()">Downtown</button>
-                    <button class="action-btn" onclick="showUptown()">Uptown</button>
-                </div>
-            </div>
+                <!-- Quick Actions Section -->
+<div class="quick-actions">
+    <h3>Quick Navigation</h3>
+    <button class="action-btn" onclick="centerMap()">Return to Last Location</button>
+    <button class="action-btn" onclick="showDowntown()">Downtown</button>
+    <button class="action-btn" onclick="showUptown()">Uptown</button>
+    
+    <!-- כפתור אופציונלי לאיפוס הזיכרון -->
+    <div style="margin-top: 15px; padding-top: 15px; border-top: 1px solid #e5e7eb;">
+        <button class="action-btn" onclick="resetUserLocation()" 
+                style="background-color: #6b7280; font-size: 12px; padding: 6px 12px;"
+                title="Clear location memory and return to default center">
+            Reset Location Memory
+        </button>
+    </div>
+</div>
         </aside>
 
         <!-- Map Container -->
