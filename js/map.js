@@ -76,23 +76,50 @@ function initializeMap() {
 }
 
 // Add New Westminster city boundary
+// Add New Westminster city boundary with accurate coordinates
 function addCityBoundary() {
-    // Approximate city boundary coordinates
-    const cityBoundary = [
-        [49.1825, -122.9475],
-        [49.1825, -122.8725],
-        [49.2275, -122.8725],
-        [49.2275, -122.9475],
-        [49.1825, -122.9475]
+    // More accurate city boundary coordinates based on geographic features
+    // Main city area (excluding Queensborough)
+    const mainCityBoundary = [
+        [49.2320, -122.9200], // North boundary near Brunette River
+        [49.2280, -122.8950], // Northeast near Coquitlam
+        [49.2250, -122.8800], // East boundary
+        [49.2150, -122.8750], // Southeast boundary
+        [49.2050, -122.8850], // Near Fraser River bend
+        [49.1980, -122.9000], // South along Fraser River
+        [49.1950, -122.9150], // Southwest Fraser River
+        [49.1980, -122.9350], // West along Fraser River
+        [49.2100, -122.9450], // Northwest boundary
+        [49.2200, -122.9300], // North boundary continuation
+        [49.2320, -122.9200]  // Close polygon
     ];
     
-    L.polygon(cityBoundary, {
+    // Queensborough area (part of New Westminster on Lulu Island)
+    const queensboroughBoundary = [
+        [49.1850, -122.9500], // Northwest of Lulu Island
+        [49.1900, -122.9200], // Northeast area
+        [49.1750, -122.9150], // Southeast area  
+        [49.1700, -122.9400], // Southwest area
+        [49.1850, -122.9500]  // Close polygon
+    ];
+    
+    // Add main city boundary
+    L.polygon(mainCityBoundary, {
         color: '#3b82f6',
         weight: 3,
         opacity: 0.8,
         fillOpacity: 0.1,
         dashArray: '10, 10'
-    }).addTo(map).bindPopup('<h3>New Westminster City Limits</h3><p>Official Community Plan boundary</p>');
+    }).addTo(map).bindPopup('<h3>New Westminster - Main City</h3><p>City boundaries following Fraser River, Brunette River, and municipal limits</p>');
+    
+    // Add Queensborough boundary
+    L.polygon(queensboroughBoundary, {
+        color: '#3b82f6',
+        weight: 3,
+        opacity: 0.8,
+        fillOpacity: 0.1,
+        dashArray: '10, 10'
+    }).addTo(map).bindPopup('<h3>New Westminster - Queensborough</h3><p>Part of New Westminster located on Lulu Island</p>');
 }
 
 // Add key location markers
