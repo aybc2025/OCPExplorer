@@ -3,13 +3,9 @@ let map;
 let currentMarkers = [];
 let currentOverlays = [];
 
-// New Westminster coordinates and bounds
+// New Westminster center coordinates (no bounds restrictions)
 const NEW_WESTMINSTER = {
-    center: [49.2057, -122.9110], // City center coordinates
-    bounds: [
-        [49.1800, -122.9500], // Southwest corner
-        [49.2300, -122.8700]  // Northeast corner
-    ]
+    center: [49.2057, -122.9110] // City center coordinates only
 };
 
 // Key locations in New Westminster
@@ -39,14 +35,11 @@ const LOCATIONS = {
 // Initialize the map
 function initializeMap() {
     try {
-        // Create map instance
+        // Create map instance with NO restrictions on movement
         map = L.map('map', {
             center: NEW_WESTMINSTER.center,
-            zoom: 13,
-            maxBounds: NEW_WESTMINSTER.bounds,
-            maxBoundsViscosity: 1.0,
-            minZoom: 11,
-            maxZoom: 18
+            zoom: 13
+            // Removed all movement restrictions: maxBounds, maxBoundsViscosity, minZoom, maxZoom
         });
 
         // Add base tile layer (OpenStreetMap)
@@ -67,7 +60,7 @@ function initializeMap() {
         // Add click event listener
         map.on('click', onMapClick);
         
-        console.log('Map initialized successfully');
+        console.log('Map initialized successfully - no movement restrictions');
         
     } catch (error) {
         console.error('Error initializing map:', error);
@@ -80,7 +73,7 @@ function addCityBoundary() {
     // Official boundaries extracted from City GIS data (KML/GeoJSON)
     // These are the exact coordinates used by the city government
     
-    // Main city boundary (complete 200+ precise points)
+    // Main city boundary (189 precise points)
     const mainCityBoundary = [
         [49.197720, -122.919373], [49.197717, -122.922431], [49.198423, -122.925771], [49.199492, -122.928588],
         [49.200483, -122.931608], [49.200790, -122.934281], [49.200487, -122.937332], [49.199651, -122.940952],
