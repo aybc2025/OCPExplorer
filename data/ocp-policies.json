@@ -1,0 +1,188 @@
+{
+  "policies": {
+    "economy": {
+      "3.1": {
+        "title": "Foster a knowledge-based economy and creative industries",
+        "text": "New Westminster will build on its existing knowledge-based and creative economy by fostering an environment for these sectors to grow and attracting new businesses in these sectors.",
+        "actions": {
+          "3.1a": "Create an Economic Development Plan that will attract, retain and grow knowledge-based and creative industries.",
+          "3.1c": "Collaborate with stakeholders, including post-secondary institutions, Fraser Health, and local developers, to implement the IDEA Centre Roadmap.",
+          "3.1d": "Advance the Intelligent City initiative.",
+          "3.1e": "Promote the City as a film industry location of choice."
+        },
+        "relatedAreas": ["downtown", "hospital_area", "sapperton"]
+      },
+      "3.2": {
+        "title": "Protect the industrial land base",
+        "text": "Protect the industrial land base and encourage employment-intensive and sustainable industrial uses.",
+        "relatedAreas": ["queensborough", "industrial_areas"]
+      },
+      "3.3": {
+        "title": "Encourage office development",
+        "text": "The City should continue to encourage office development in strategic locations, including Downtown, the Uptown Local Centre and Frequent Transit Development Areas.",
+        "actions": {
+          "3.3a": "Create programs to encourage creative reuse of heritage buildings and creative redevelopment of underutilized sites.",
+          "3.3b": "Encourage development of shared and affordable workspaces that foster opportunities for collaboration and provide access to business resources.",
+          "3.3c": "Review the Zoning Bylaw to minimize barriers to achieving office development and more versatile workspace in new and existing buildings.",
+          "3.3d": "Explore initiatives to encourage office development within the Special Employment Area.",
+          "3.3e": "Encourage office development in strategic locations, including Downtown, the Uptown Local Centre and Frequent Transit Development Areas."
+        },
+        "targetGrowth": "186,000 square metres (2.0 million square feet) of new office space by 2041",
+        "relatedAreas": ["downtown", "uptown", "ftda_areas", "brewery_district", "sapperton_green"]
+      },
+      "3.4": {
+        "title": "Promote diverse retail and services",
+        "text": "Promote a diverse range of retail and services for all residents and employees.",
+        "relatedAreas": ["commercial_areas", "ewen_avenue", "twelfth_street", "columbia_street", "sixth_street"]
+      },
+      "3.5": {
+        "title": "Support government organizations and institutions",
+        "text": "Collaborate with and support government organizations and institutions as major employers and economic generators.",
+        "actions": {
+          "3.5a": "Create an Economic Development Plan that highlights ways to collaborate with and support government organizations and institutions."
+        },
+        "majorInstitutions": [
+          "Royal Columbian Hospital",
+          "Queen's Park Care Centre", 
+          "Douglas College",
+          "TransLink",
+          "Law Courts",
+          "Justice Institute of British Columbia"
+        ],
+        "hospitalImpact": "$66 million contribution to New Westminster economy (2016), 3,500 jobs"
+      }
+    },
+    "housing": {
+      "8.1": {
+        "title": "Increase housing diversity",
+        "text": "Increase the diversity of housing options to meet the needs of people at different stages of life and with different housing preferences.",
+        "relatedAreas": ["all_residential"]
+      },
+      "8.2": {
+        "title": "Increase housing affordability",
+        "text": "Increase the number of affordable housing options, including both rental and owned housing.",
+        "relatedAreas": ["all_residential"]
+      }
+    },
+    "landUse": {
+      "heritage": {
+        "title": "Heritage Revitalization Agreements",
+        "text": "A Heritage Revitalization Agreement, or similar tool, may be used when a heritage asset on the site is appropriately incorporated into a development. Through a Heritage Revitalization Agreement the development may be eligible for incentives such as an increase in density or a reduced parking requirement, which would make it viable to conserve property of heritage merit.",
+        "applicableAreas": ["RD", "RM", "ML", "MH"]
+      }
+    },
+    "transportation": {
+      "11.1": {
+        "title": "Support transit-oriented development",
+        "text": "Support transit-oriented development that increases density and mixed-use development near SkyTrain stations and along frequent transit corridors.",
+        "relatedAreas": ["skytrain_stations", "frequent_transit_areas"]
+      }
+    },
+    "environment": {
+      "5.1": {
+        "title": "Protect environmentally sensitive areas",
+        "text": "Protect and enhance environmentally sensitive areas including the Fraser River foreshore, ravines, and urban forest.",
+        "relatedAreas": ["fraser_river", "intertidal_areas", "ravines"]
+      }
+    }
+  },
+  "developmentGuidelines": {
+    "heights": {
+      "sapperton_green": {
+        "range": "3 to 35 storeys",
+        "description": "Building heights will range from three storeys to a maximum of 35 storeys.",
+        "requirement": "Comprehensive Master Plan required"
+      },
+      "low_rise_areas": {
+        "range": "Up to 6 storeys",
+        "description": "Only in circumstances where the Development Permit Area guidelines can be met, a compelling case can be made, and appropriate amenities are provided will a five or six storey low rise building be considered.",
+        "applicableAreas": ["RM", "ML"]
+      }
+    },
+    "density": {
+      "low": "Single detached dwellings, duplexes, gentle infill",
+      "medium": "Townhouses, low-rise apartments, mixed-use buildings up to 6 storeys",
+      "high": "High-rise residential, large mixed-use developments, transit-oriented communities"
+    },
+    "openSpace": {
+      "sapperton_green": "A minimum 15% of the site will be publicly accessible open space, including plazas, squares, parks, playgrounds and other open areas that are accessible to the public."
+    },
+    "activeTransportation": {
+      "sapperton_green": "Emphasis will be placed on active transportation linkages."
+    }
+  },
+  "specialAreas": {
+    "regionalCityCentre": {
+      "name": "Downtown Regional City Centre",
+      "description": "Designated to accommodate high density transit-oriented office space clustered around its two SkyTrain stations.",
+      "officeGrowth": "47,913 sq.m. (515,729 sq.ft.) by 2041",
+      "features": ["Two SkyTrain stations", "High density development"]
+    },
+    "frequentTransitDevelopmentAreas": {
+      "stations": [
+        {
+          "name": "Sapperton Station",
+          "description": "FTDA intended for high density development with variety of housing, commercial services, community amenities and employment opportunities"
+        },
+        {
+          "name": "Braid Station", 
+          "description": "FTDA intended for high density development with variety of housing, commercial services, community amenities and employment opportunities"
+        },
+        {
+          "name": "22nd Street Station",
+          "description": "FTDA intended for high density development with variety of housing, commercial services, community amenities and employment opportunities"
+        }
+      ]
+    },
+    "uptownLocalCentre": {
+      "name": "Uptown Local Centre",
+      "description": "Core area of Uptown that will continue to be an important mixed-use node in the city. Transit service to the area is expected to increase over time.",
+      "characteristics": "Smaller in scale than a Regional City Centre but serves the local area with commercial uses"
+    },
+    "specialEmploymentArea": {
+      "name": "Special Employment Area around Royal Columbian Hospital",
+      "description": "Recognizes the significant role the hospital plays in contributing to local economic activity. Seeks to promote and offer incentives for office development within a five-minute walk of the hospital.",
+      "purpose": "Align with IDEA Centre work and leverage economic opportunities"
+    }
+  },
+  "growthProjections": {
+    "employment": {
+      "total": "Over 21,000 new jobs by 2041",
+      "retail": "65,000 sq.m (700,000 sq.ft) neighbourhood-serving retail = 4,200 jobs",
+      "office": "200,000 sq.m (2.0 million sq.ft) office space = 11,300 jobs", 
+      "industrial": "200,000 sq.m (2.0 million sq.ft) industrial space = 3,000 jobs"
+    },
+    "population": {
+      "sapperton_green": "Approximately 3,700 dwelling units and 7,500 residents"
+    }
+  },
+  "restrictionsAndRequirements": {
+    "noResidential": ["CHC"],
+    "healthcareRequired": ["BDMU", "CHC"],
+    "masterPlanRequired": ["SGTMC"],
+    "activeCommercialFrontage": ["ML", "MH"],
+    "transitIntegration": ["SGTMC", "FTDA areas"],
+    "heritageConsiderations": ["All areas with heritage assets"]
+  },
+  "searchableContent": {
+    "commonQuestions": {
+      "building_heights": "Building heights vary by area. Low-rise areas allow up to 6 storeys, Sapperton Green allows 3-35 storeys, and other areas vary based on zoning.",
+      "mixed_use": "Mixed-use development is encouraged in ML (low-rise) and MH (high-rise) areas, with active commercial frontages required on principal streets.",
+      "healthcare": "Healthcare uses are specifically supported around Royal Columbian Hospital in the Special Employment Area and in CHC (Commercial and Health Care) zones.",
+      "transit": "Transit-oriented development is encouraged near SkyTrain stations (Downtown, Sapperton, Braid, 22nd Street) and along frequent transit corridors.",
+      "office_space": "Office development is encouraged Downtown, Uptown Local Centre, Frequent Transit Development Areas, and within 5 minutes of Royal Columbian Hospital.",
+      "residential": "Residential uses range from single detached (RD) to high-rise (RH), with various mixed-use options available.",
+      "industrial": "Industrial uses are protected in designated areas, particularly in Queensborough and Mixed Employment zones."
+    },
+    "keywords": {
+      "height": ["storeys", "height", "tall", "building", "floors"],
+      "density": ["density", "FAR", "units", "population", "crowded"],
+      "commercial": ["retail", "shop", "business", "commercial", "store"],
+      "office": ["office", "workspace", "business", "professional"],
+      "residential": ["housing", "homes", "apartments", "residential", "living"],
+      "healthcare": ["hospital", "medical", "health", "care", "clinic"],
+      "transit": ["skytrain", "transit", "transportation", "station"],
+      "heritage": ["heritage", "historic", "conservation", "preservation"]
+    }
+  }
+}
