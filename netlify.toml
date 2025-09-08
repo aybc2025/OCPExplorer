@@ -1,0 +1,173 @@
+# Netlify configuration for OCP Explorer
+# This file configures build settings, functions, and redirects
+
+[build]
+  # Base directory for the site
+  base = "."
+  
+  # Directory to publish (since we're using static files, this is the root)
+  publish = "."
+  
+  # Functions directory
+  functions = "netlify/functions"
+  
+  # Build command (none needed for static site)
+  command = ""
+
+[build.environment]
+  # Node.js version for functions
+  NODE_VERSION = "18"
+  
+  # NPM version
+  NPM_VERSION = "9"
+
+# Function-specific settings
+[functions]
+  # Directory where functions are located
+  directory = "netlify/functions"
+  
+  # Node.js version for functions
+  node_bundler = "esbuild"
+
+# Headers for security and performance
+[[headers]]
+  for = "/*"
+  [headers.values]
+    # Security headers
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"
+    X-XSS-Protection = "1; mode=block"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    
+    # Content Security Policy
+    Content-Security-Policy = '''
+      default-src 'self';
+      script-src 'self' 'unsafe-inline' https://unpkg.com https://cdnjs.cloudflare.com;
+      style-src 'self' 'unsafe-inline' https://unpkg.com https://fonts.googleapis.com;
+      font-src 'self' https://fonts.gstatic.com;
+      img-src 'self' data: https: http:;
+      connect-src 'self' https://*.googleapis.com https://*.openstreetmap.org https://*.tile.openstreetmap.org;
+      frame-src 'none';
+      object-src 'none';
+      base-uri 'self';
+      form-action 'self';
+    '''
+
+# Cache control for static assets
+[[headers]]
+  for = "/css/*"
+  [headers.values]
+    Cache-Control = "public, max-age=604800, immutable"  # 1 week
+
+[[headers]]
+  for = "/js/*"
+  [headers.values]
+    Cache-Control = "public, max-age=604800, immutable"  # 1 week
+
+[[headers]]
+  for = "/data/*"
+  [headers.values]
+    Cache-Control = "public, max-age=3600"  # 1 hour (data might update)
+
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=2592000, immutable"  # 30 days
+
+# API redirects for cleaner URLs
+[[redirects]]
+  from = "/api/search"
+  to = "/.netlify/functions/search"
+  status = 200
+
+[[redirects]]
+  from = "/api/geocode"
+  to = "/.netlify/functions/geocode"
+  status = 200
+
+# Handle SPA-like behavior (though this is mostly static)
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+  conditions = {Role = ["admin"], Country = ["US"]}  # Only for specific conditions
+  force = false
+
+# Development proxy for local testing
+[context.dev]
+  command = "echo 'Development build'"
+  
+[context.dev.environment]
+  NODE_ENV = "development"
+
+# Branch-specific settings
+[context.branch-deploy]
+  command = "echo 'Branch deploy'"
+
+[context.deploy-preview]
+  command = "echo 'Deploy preview'"
+
+# Environment-specific headers
+[context.production]
+  [context.production.environment]
+    NODE_ENV = "production"
+
+# Form handling (if needed in future)
+# [forms]
+#   settings = { implicit = false }
+
+# Edge functions (for future use)
+# [[edge_functions]]
+#   function = "search-optimization"
+#   path = "/search/*"
+
+# Split testing (for future A/B testing)
+# [split_testing]
+#   enabled = false
+
+# Plugin configuration
+[[plugins]]
+  package = "@netlify/plugin-lighthouse"
+  
+  [plugins.inputs.audits]
+    performance = true
+    accessibility = true
+    best-practices = true
+    seo = true
+    
+  [plugins.inputs.settings]
+    emulate_mobile = true
+
+# Error pages
+# [[redirects]]
+#   from = "/404"
+#   to = "/404.html"
+#   status = 404
+
+# Environment variables documentation (actual values set in Netlify UI)
+# GOOGLE_AI_API_KEY - Your Google Gemini API key (required for AI search)
+# URL - Automatically set by Netlify
+# DEPLOY_PRIME_URL - Automatically set by Netlify for preview deployments
+
+# Build hooks documentation
+# Use these webhook URLs to trigger rebuilds:
+# Production: https://api.netlify.com/build_hooks/{YOUR_HOOK_ID}
+# Branch: https://api.netlify.com/build_hooks/{YOUR_HOOK_ID}
+
+# Performance optimizations
+[build.processing]
+  skip_processing = false
+  
+[build.processing.css]
+  bundle = true
+  minify = true
+
+[build.processing.js]
+  bundle = false  # We want separate files for easier debugging
+  minify = true
+
+[build.processing.html]
+  pretty_urls = true
+
+[build.processing.images]
+  compress = true
