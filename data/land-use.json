@@ -1,0 +1,313 @@
+{
+  "landUseDesignations": {
+    "RD": {
+      "code": "RD",
+      "name": "Residential - Detached and Semi-Detached Housing",
+      "category": "residential",
+      "density": "low",
+      "color": "#fef3c7",
+      "borderColor": "#f59e0b",
+      "description": "Low density ground oriented residential uses including gentle infill which increases housing choice and retains existing neighbourhood character.",
+      "principalUses": [
+        "Single detached dwellings",
+        "Duplexes", 
+        "Secondary suites",
+        "Detached accessory dwelling units (laneway houses, carriage houses)"
+      ],
+      "complementaryUses": [
+        "Home based businesses",
+        "Small scale local commercial uses (corner stores)",
+        "Small scale institutional uses (child care, care facilities, places of worship)",
+        "Utilities, transportation corridors, parks, open space, community facilities"
+      ],
+      "maxDensity": "Low density residential",
+      "heritageIncentives": true
+    },
+    "RM": {
+      "code": "RM", 
+      "name": "Residential - Multiple Unit Buildings",
+      "category": "residential",
+      "density": "medium",
+      "color": "#fed7aa",
+      "borderColor": "#ea580c",
+      "description": "A mix of small to moderate sized multiple unit residential buildings.",
+      "principalUses": [
+        "Townhouses",
+        "Rowhouses", 
+        "Stacked townhouses",
+        "Low rises (up to 6 storeys in special circumstances)"
+      ],
+      "complementaryUses": [
+        "Home based businesses",
+        "Small scale local commercial uses (corner stores)",
+        "Institutional uses (child care, care facilities, places of worship)",
+        "Utilities, transportation corridors, parks, open space, community facilities"
+      ],
+      "maxDensity": "Medium density multiple unit residential",
+      "maxHeight": "6 storeys (with special approval)",
+      "heritageIncentives": true
+    },
+    "RH": {
+      "code": "RH",
+      "name": "Residential - High Rise",
+      "category": "residential", 
+      "density": "high",
+      "color": "#fecaca",
+      "borderColor": "#dc2626",
+      "description": "High density multiple unit residential uses including row houses, stacked townhouses, low rises and high rises.",
+      "principalUses": [
+        "Row houses",
+        "Stacked townhouses",
+        "Low rise buildings",
+        "High rise buildings"
+      ],
+      "complementaryUses": [
+        "Community amenities (child care, libraries, artist studios, art galleries, community space)",
+        "Utilities, transportation corridors, parks, open space, community facilities"
+      ],
+      "maxDensity": "High density mixed use",
+      "maxHeight": "High rise (varies by location)"
+    },
+    "RHC": {
+      "code": "RHC",
+      "name": "Residential High Density/Community Facility",
+      "category": "residential",
+      "density": "high", 
+      "color": "#fce7f3",
+      "borderColor": "#be185d",
+      "description": "High density multiple unit residential uses with community amenities such as child care, libraries, artist studios, art galleries or community space.",
+      "principalUses": [
+        "High density multiple unit residential",
+        "Community amenities"
+      ],
+      "complementaryUses": [
+        "Child care facilities",
+        "Libraries", 
+        "Artist studios",
+        "Art galleries",
+        "Community space"
+      ],
+      "maxDensity": "High density mixed use"
+    },
+    "ML": {
+      "code": "ML",
+      "name": "Mixed Use - Low Rise", 
+      "category": "mixed-use",
+      "density": "medium",
+      "color": "#d1fae5",
+      "borderColor": "#10b981",
+      "description": "Low-rise commercial or commercial and residential mixed use buildings which create active and engaging principal streets.",
+      "principalUses": [
+        "Low rise buildings with commercial uses (retail, office)",
+        "Residential uses (may be included)",
+        "Active commercial uses required on principal street frontages"
+      ],
+      "complementaryUses": [
+        "Home based businesses",
+        "Institutional uses (child care, care facilities, places of worship)",
+        "Utilities, transportation corridors, parks, open space, community facilities"
+      ],
+      "maxDensity": "Medium density mixed use",
+      "maxHeight": "Low rise (up to 6 storeys with special approval)",
+      "heritageIncentives": true
+    },
+    "MH": {
+      "code": "MH",
+      "name": "Mixed Use - High Rise",
+      "category": "mixed-use",
+      "density": "high",
+      "color": "#dcfce7", 
+      "borderColor": "#22c55e",
+      "description": "Low- mid- and high-rise commercial or commercial and residential mixed use buildings which create active and engaging principal streets.",
+      "principalUses": [
+        "Low rise, mid-rise and high rise buildings",
+        "Commercial uses (retail, office)",
+        "Residential uses (may be included)",
+        "Active commercial uses required on principal street frontages"
+      ],
+      "complementaryUses": [
+        "Home based businesses",
+        "Small scale local commercial uses (corner stores)",
+        "Institutional uses (child care, care facilities, places of worship)",
+        "Utilities, transportation corridors, parks, open space, community facilities"
+      ],
+      "maxDensity": "High density mixed use",
+      "heritageIncentives": true
+    },
+    "BDMU": {
+      "code": "BDMU",
+      "name": "Brewery District Mixed Use and Health Care",
+      "category": "mixed-use",
+      "density": "high",
+      "color": "#e0e7ff",
+      "borderColor": "#4f46e5",
+      "description": "Large mixed use sites which must include multiple unit residential, retail and health care offices and facilities and may include other business and professional office uses.",
+      "principalUses": [
+        "Multiple-unit residential",
+        "Commercial uses",
+        "Health care offices and facilities",
+        "Business and professional office uses"
+      ],
+      "complementaryUses": [
+        "Home based businesses", 
+        "Institutional uses (care facilities)",
+        "Utilities, transportation corridors, parks, open space, community facilities"
+      ],
+      "maxDensity": "High density mixed use"
+    },
+    "SGTMC": {
+      "code": "SGTMC", 
+      "name": "Sapperton Green Transit-Oriented Mixed-Use Community",
+      "category": "mixed-use",
+      "density": "high",
+      "color": "#f0f9ff",
+      "borderColor": "#0284c7",
+      "description": "A mix of medium to high density residential, office, retail, open space, and public and other community serving facilities in a transit supportive, complete community.",
+      "principalUses": [
+        "Medium to high density residential",
+        "Office uses (750,000 sq. ft. minimum)",
+        "Retail commercial uses (150,000 sq. ft.)",
+        "Community serving facilities"
+      ],
+      "complementaryUses": [
+        "Public accessible open space (minimum 15%)",
+        "Plazas, squares, parks, playgrounds",
+        "Active transportation linkages"
+      ],
+      "maxDensity": "High density mixed use",
+      "maxHeight": "3 to 35 storeys",
+      "floorSpace": {
+        "office": "750,000 sq. ft. minimum",
+        "residential": "3,400,000 sq. ft. maximum (≈3,700 units, 7,500 residents)",
+        "retail": "150,000 sq. ft."
+      },
+      "openSpace": "15% minimum publicly accessible"
+    },
+    "C": {
+      "code": "C",
+      "name": "Commercial",
+      "category": "commercial",
+      "density": "low",
+      "color": "#ddd6fe",
+      "borderColor": "#8b5cf6",
+      "description": "Auto-oriented retail, service and office commercial uses not appropriate on pedestrian-oriented commercial streets.",
+      "principalUses": [
+        "Retail commercial uses",
+        "Service commercial uses", 
+        "Office commercial uses",
+        "Drive-through restaurants",
+        "Large product retail (appliances, yard equipment)",
+        "Automobile service, sales and repair"
+      ],
+      "complementaryUses": [
+        "Utilities, transportation corridors, parks, open space, community facilities",
+        "Residential uses ancillary to business (caretaker units)"
+      ],
+      "maxDensity": "Low density commercial"
+    },
+    "CHC": {
+      "code": "CHC",
+      "name": "Commercial and Health Care", 
+      "category": "commercial",
+      "density": "medium-high",
+      "color": "#fef7ee",
+      "borderColor": "#ea580c",
+      "description": "Healthcare and healthcare related uses which primarily support the Royal Columbian Hospital.",
+      "principalUses": [
+        "Healthcare related office",
+        "Healthcare related research",
+        "Commercial retail uses"
+      ],
+      "complementaryUses": [
+        "Healthcare related ultra-light manufacturing",
+        "Utilities, transportation corridors, parks, open space, community facilities"
+      ],
+      "maxDensity": "Medium and high density commercial",
+      "restrictions": "No residential uses permitted"
+    },
+    "ME": {
+      "code": "ME",
+      "name": "Mixed Employment",
+      "category": "employment",
+      "density": "variable",
+      "color": "#f1f5f9",
+      "borderColor": "#64748b",
+      "description": "Commercial, light industrial and service commercial uses with a focus on employment generation.",
+      "principalUses": [
+        "Light industrial",
+        "Service commercial uses",
+        "Office commercial uses"
+      ],
+      "complementaryUses": [
+        "Residential uses ancillary to business (caretaker units)",
+        "Small scale retail",
+        "Utilities, transportation corridors, parks, open space, community facilities"
+      ],
+      "maxDensity": "Density will range based on context of subject site"
+    },
+    "IN": {
+      "code": "IN",
+      "name": "Intertidal",
+      "category": "environmental",
+      "density": "natural",
+      "color": "#ecfdf5",
+      "borderColor": "#059669",
+      "description": "Preserve intertidal areas of the Fraser River foreshore in a predominantly natural state.",
+      "principalUses": [
+        "Natural habitat areas"
+      ],
+      "complementaryUses": [
+        "Lookouts",
+        "Trails",
+        "Docks",
+        "Marine commercial uses",
+        "Working river uses (wharfs)"
+      ],
+      "restrictions": "Approval from other agencies (e.g. Port of Vancouver) may be required",
+      "condition": "Surrounding natural habitat must be enhanced"
+    },
+    "U": {
+      "code": "U", 
+      "name": "Utilities and Transportation Infrastructure",
+      "category": "utilities",
+      "density": "infrastructure",
+      "color": "#f8fafc",
+      "borderColor": "#475569",
+      "description": "Utilities or major transportation corridors which are expected to remain in the long term.",
+      "principalUses": [
+        "Utilities (pump stations, electrical substations)",
+        "Major transportation corridors (rail tracks, SkyTrain)",
+        "Non-major transportation infrastructure (trails, greenways, bike paths, roads)"
+      ],
+      "complementaryUses": [
+        "Parks and open spaces (where they do not conflict with principal use)"
+      ]
+    }
+  },
+  "densityCategories": {
+    "low": {
+      "name": "Low Density",
+      "description": "Single family homes, duplexes, low-density ground-oriented housing",
+      "color": "#fef3c7"
+    },
+    "medium": {
+      "name": "Medium Density", 
+      "description": "Townhouses, low-rise apartments, small mixed-use buildings",
+      "color": "#fed7aa"
+    },
+    "high": {
+      "name": "High Density",
+      "description": "High-rise residential, large mixed-use developments, transit-oriented communities",
+      "color": "#fecaca"
+    }
+  },
+  "searchKeywords": {
+    "residential": ["housing", "homes", "apartments", "condos", "residential", "living", "dwelling"],
+    "commercial": ["business", "retail", "shop", "store", "commercial", "office", "services"],
+    "mixed-use": ["mixed", "mixed-use", "combined", "multi-use", "diverse"],
+    "employment": ["work", "jobs", "employment", "industrial", "business"],
+    "healthcare": ["hospital", "health", "medical", "care", "clinic"],
+    "height": ["tall", "high", "storeys", "floors", "tower", "building height"],
+    "density": ["dense", "density", "crowded", "population", "units"]
+  }
+}
