@@ -11,6 +11,7 @@ class OCPDataHandler {
         };
         this.isLoaded = false;
         this.loadingPromise = null;
+        this.boundaryGeometry = null; // Store parsed boundary geometry
     }
 
     // Initialize and load all data
@@ -28,14 +29,15 @@ class OCPDataHandler {
         try {
             console.log('Loading OCP data...');
             
-            const [landUseResponse, zoningResponse, policiesResponse] = await Promise.all([
+            const [landUseResponse, zoningResponse, policiesResponse, boundaryResponse] = await Promise.all([
                 fetch('data/land-use.json'),
                 fetch('data/zoning.json'), 
-                fetch('data/ocp-policies.json')
+                fetch('data/ocp-policies.json'),
+                fetch('data/City_Boundary.geojson')
             ]);
 
             // Check if all responses are OK
-            if (!landUseResponse.ok || !zoningResponse.ok || !policiesResponse.ok) {
+            if (!landUseResponse.ok || !zoningResponse.ok || !policiesResponse.ok || !boundaryResponse.ok) {
                 throw new Error('Failed to load one or more data files');
             }
 
@@ -43,6 +45,10 @@ class OCPDataHandler {
             this.data.landUse = await landUseResponse.json();
             this.data.zoning = await zoningResponse.json();
             this.data.policies = await policiesResponse.json();
+            this.data.cityBoundary = await boundaryResponse.json();
+
+            // Process boundary geometry for precise point-in-polygon checks
+            this.processBoundaryGeometry();
 
             this.isLoaded = true;
             console.log('OCP data loaded successfully');
@@ -57,6 +63,72 @@ class OCPDataHandler {
             console.error('Error loading OCP data:', error);
             throw error;
         }
+    }
+
+    // Process boundary geometry for efficient point-in-polygon checks
+    processBoundaryGeometry() {
+        if (!this.data.cityBoundary || !this.data.cityBoundary.features) {
+            console.warn('No boundary data available');
+            return;
+        }
+
+        // Extract all polygon coordinates from the GeoJSON
+        this.boundaryGeometry = [];
+        
+        this.data.cityBoundary.features.forEach(feature => {
+            if (feature.geometry && feature.geometry.type === 'Polygon') {
+                // Each polygon can have multiple rings (exterior + holes)
+                feature.geometry.coordinates.forEach(ring => {
+                    this.boundaryGeometry.push(ring);
+                });
+            }
+        });
+
+        console.log('Boundary geometry processed:', this.boundaryGeometry.length, 'rings');
+    }
+
+    // Precise point-in-polygon check using ray casting algorithm
+    isPointInPolygon(lat, lng, polygon) {
+        let inside = false;
+        
+        for (let i = 0, j = polygon.length - 1; i < polygon.length; j = i++) {
+            const xi = polygon[i][0]; // longitude
+            const yi = polygon[i][1]; // latitude
+            const xj = polygon[j][0]; // longitude
+            const yj = polygon[j][1]; // latitude
+            
+            if (((yi > lat) !== (yj > lat)) && 
+                (lng < (xj - xi) * (lat - yi) / (yj - yi) + xi)) {
+                inside = !inside;
+            }
+        }
+        
+        return inside;
+    }
+
+    // Check if coordinates are within New Westminster using precise geometry
+    async isWithinNewWestminster(lat, lng) {
+        if (!this.boundaryGeometry || this.boundaryGeometry.length === 0) {
+            console.warn('Boundary geometry not available, using fallback bounds');
+            // Fallback to rough bounds if geometry not available
+            const bounds = {
+                north: 49.23,
+                south: 49.19,
+                east: -122.88,
+                west: -122.95
+            };
+            return lat >= bounds.south && lat <= bounds.north && 
+                   lng >= bounds.west && lng <= bounds.east;
+        }
+
+        // Check against all boundary polygons
+        for (const ring of this.boundaryGeometry) {
+            if (this.isPointInPolygon(lat, lng, ring)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     // Get land use information for a specific designation code
@@ -116,35 +188,30 @@ class OCPDataHandler {
         // Search land use designations
         if (this.data.landUse) {
             for (const [code, designation] of Object.entries(this.data.landUse.landUseDesignations)) {
-                const searchText = `${designation.name} ${designation.description} ${designation.principalUses?.join(' ')} ${designation.complementaryUses?.join(' ')}`.toLowerCase();
+                const searchText = `${designation.name} ${designation.description} ${designation.category}`.toLowerCase();
                 
                 if (keywords.some(keyword => searchText.includes(keyword))) {
                     results.push({
-                        type: 'land-use',
+                        type: 'landUse',
                         code,
-                        name: designation.name,
-                        description: designation.description,
-                        category: designation.category,
-                        data: designation
+                        ...designation
                     });
                 }
             }
         }
 
-        // Search policies
-        if (this.data.policies) {
-            for (const [categoryKey, category] of Object.entries(this.data.policies.policies)) {
-                for (const [policyKey, policy] of Object.entries(category)) {
-                    const searchText = `${policy.title} ${policy.text}`.toLowerCase();
+        // Search zoning districts
+        if (this.data.zoning) {
+            for (const [categoryName, category] of Object.entries(this.data.zoning.zoningDistricts)) {
+                for (const [zoneCode, zone] of Object.entries(category)) {
+                    const searchText = `${zone.name} ${zone.description || ''} ${categoryName}`.toLowerCase();
                     
                     if (keywords.some(keyword => searchText.includes(keyword))) {
                         results.push({
-                            type: 'policy',
-                            code: `${categoryKey}.${policyKey}`,
-                            name: policy.title,
-                            description: policy.text,
-                            category: categoryKey,
-                            data: policy
+                            type: 'zoning',
+                            code: zoneCode,
+                            category: categoryName,
+                            ...zone
                         });
                     }
                 }
@@ -154,7 +221,7 @@ class OCPDataHandler {
         return results;
     }
 
-    // Get policy information
+    // Get policy by path (e.g., "housing.1.1")
     getPolicy(policyPath) {
         if (!this.isLoaded || !this.data.policies) {
             return null;
@@ -186,39 +253,26 @@ class OCPDataHandler {
         }));
     }
 
-    // Check if coordinates are within New Westminster
-    async isWithinNewWestminster(lat, lng) {
-        // This would typically use the city boundary GeoJSON
-        // For now, return a rough bounding box check
-        const bounds = {
-            north: 49.23,
-            south: 49.19,
-            east: -122.88,
-            west: -122.95
-        };
-
-        return lat >= bounds.south && lat <= bounds.north && 
-               lng >= bounds.west && lng <= bounds.east;
-    }
-
     // Get information for a specific location
     async getLocationInfo(lat, lng) {
+        const withinBoundary = await this.isWithinNewWestminster(lat, lng);
+        
         const info = {
             coordinates: { lat, lng },
-            withinBoundary: await this.isWithinNewWestminster(lat, lng),
+            withinBoundary: withinBoundary,
             landUse: null,
             zoning: null,
             policies: [],
             nearbyFeatures: []
         };
 
-        // In a real implementation, this would use spatial queries
-        // For now, we'll provide sample data based on location
-        if (info.withinBoundary) {
-            // Sample logic - in reality this would use GIS data
+        // Always provide information, but mark boundary status clearly
+        // In a real implementation, this would use spatial queries based on actual zoning maps
+        if (withinBoundary) {
+            // Sample logic based on location within New Westminster
             if (lat > 49.21) {
                 info.landUse = this.getLandUseInfo('RD');
-                info.zoning = this.getZoningInfo('R1');
+                info.zoning = this.getZoningInfo('RS1');
             } else if (lat > 49.205) {
                 info.landUse = this.getLandUseInfo('RM');
                 info.zoning = this.getZoningInfo('RM1');
@@ -227,8 +281,13 @@ class OCPDataHandler {
                 info.zoning = this.getZoningInfo('MU2');
             }
 
-            // Add relevant policies
+            // Add relevant policies for areas within the city
             info.policies = this.getPoliciesByCategory('economy').slice(0, 2);
+        } else {
+            // For points outside the boundary, provide limited information
+            info.landUse = null;
+            info.zoning = null;
+            info.policies = [];
         }
 
         return info;
@@ -243,129 +302,53 @@ class OCPDataHandler {
         return this.data.policies.developmentGuidelines[areaType] || null;
     }
 
-    // Search for areas with specific height limits
-    searchByHeight(minHeight = null, maxHeight = null) {
+    // Search for areas with specific characteristics
+    searchAreas(criteria) {
         if (!this.isLoaded) {
             return [];
         }
 
         const results = [];
         
-        // Search through zoning districts
-        if (this.data.zoning) {
-            for (const [categoryKey, category] of Object.entries(this.data.zoning.zoningDistricts)) {
-                for (const [zoneKey, zone] of Object.entries(category)) {
-                    if (zone.maxHeight) {
-                        const heightMatch = this.parseHeight(zone.maxHeight);
-                        if (heightMatch && this.isHeightInRange(heightMatch, minHeight, maxHeight)) {
-                            results.push({
-                                type: 'zoning',
-                                code: zoneKey,
-                                name: zone.name,
-                                height: zone.maxHeight,
-                                category: categoryKey,
-                                data: zone
-                            });
-                        }
-                    }
-                }
-            }
+        // This would be enhanced with actual spatial data
+        // For now, return sample results based on criteria
+        
+        if (criteria.maxDensity) {
+            const landUseResults = this.searchByCategory('residential')
+                .filter(area => area.maxDensity <= criteria.maxDensity);
+            results.push(...landUseResults);
         }
-
+        
         return results;
     }
 
-    // Helper function to parse height strings
-    parseHeight(heightString) {
-        const match = heightString.match(/(\d+)m/);
-        return match ? parseInt(match[1]) : null;
-    }
-
-    // Helper function to check if height is in range
-    isHeightInRange(height, minHeight, maxHeight) {
-        if (minHeight !== null && height < minHeight) return false;
-        if (maxHeight !== null && height > maxHeight) return false;
-        return true;
-    }
-
-    // Get summary statistics
-    getDataSummary() {
+    // Get statistics about the city
+    getCityStats() {
         if (!this.isLoaded) {
             return null;
         }
 
-        const summary = {
-            landUseDesignations: Object.keys(this.data.landUse?.landUseDesignations || {}).length,
-            zoningDistricts: this.countZoningDistricts(),
-            policies: this.countPolicies(),
-            categories: this.getUniqueCategories()
-        };
-
-        return summary;
-    }
-
-    // Helper to count zoning districts
-    countZoningDistricts() {
-        if (!this.data.zoning) return 0;
+        // Calculate from boundary data if available
+        let totalArea = 0;
+        let perimeter = 0;
         
-        let count = 0;
-        for (const category of Object.values(this.data.zoning.zoningDistricts)) {
-            count += Object.keys(category).length;
-        }
-        return count;
-    }
-
-    // Helper to count policies
-    countPolicies() {
-        if (!this.data.policies) return 0;
-        
-        let count = 0;
-        for (const category of Object.values(this.data.policies.policies)) {
-            count += Object.keys(category).length;
-        }
-        return count;
-    }
-
-    // Helper to get unique categories
-    getUniqueCategories() {
-        const categories = new Set();
-        
-        if (this.data.landUse) {
-            for (const designation of Object.values(this.data.landUse.landUseDesignations)) {
-                if (designation.category) {
-                    categories.add(designation.category);
+        if (this.data.cityBoundary && this.data.cityBoundary.features) {
+            this.data.cityBoundary.features.forEach(feature => {
+                if (feature.properties) {
+                    totalArea += feature.properties.SHAPE__Area || 0;
+                    perimeter += feature.properties.SHAPE__Length || 0;
                 }
-            }
-        }
-        
-        return Array.from(categories);
-    }
-
-    // Export data for AI processing
-    prepareContextForAI(location = null, query = null) {
-        if (!this.isLoaded) {
-            return { error: 'Data not loaded' };
+            });
         }
 
-        const context = {
-            availableData: this.getDataSummary(),
-            queryLocation: location,
-            userQuery: query
+        return {
+            totalArea: totalArea,
+            perimeter: perimeter,
+            landUseTypes: this.data.landUse ? Object.keys(this.data.landUse.landUseDesignations).length : 0,
+            zoningDistricts: this.data.zoning ? 
+                Object.values(this.data.zoning.zoningDistricts)
+                    .reduce((count, category) => count + Object.keys(category).length, 0) : 0
         };
-
-        // If location provided, add relevant local data
-        if (location) {
-            // Add nearby land use designations and zoning
-            context.relevantDesignations = this.searchByCategory('residential').slice(0, 3);
-            context.relevantPolicies = this.getPoliciesByCategory('economy').slice(0, 2);
-        }
-
-        // If query provided, add search results
-        if (query) {
-            context.searchResults = this.searchByKeywords(query).slice(0, 5);
-        }
-
-        return context;
     }
 }
 
@@ -373,26 +356,8 @@ class OCPDataHandler {
 window.ocpDataHandler = new OCPDataHandler();
 
 // Auto-initialize when DOM is ready
-document.addEventListener('DOMContentLoaded', async () => {
-    try {
-        await window.ocpDataHandler.initialize();
-    } catch (error) {
+document.addEventListener('DOMContentLoaded', function() {
+    window.ocpDataHandler.initialize().catch(error => {
         console.error('Failed to initialize OCP data:', error);
-        // Show user-friendly error message
-        const propertyInfo = document.getElementById('property-info');
-        if (propertyInfo) {
-            propertyInfo.innerHTML = `
-                <div class="error-message">
-                    <h3>⚠️ Data Loading Error</h3>
-                    <p>Unable to load OCP data. Please refresh the page or try again later.</p>
-                    <small>Error: ${error.message}</small>
-                </div>
-            `;
-        }
-    }
+    });
 });
-
-// Export for use in other modules
-if (typeof module !== 'undefined' && module.exports) {
-    module.exports = OCPDataHandler;
-}
