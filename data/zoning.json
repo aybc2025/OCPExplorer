@@ -1,0 +1,329 @@
+{
+  "zoningDistricts": {
+    "residential": {
+      "R1": {
+        "name": "Single Detached Residential",
+        "landUse": "RD",
+        "maxHeight": "10m (2.5 storeys)",
+        "maxFAR": "0.60",
+        "lotCoverage": "35%",
+        "minLotSize": "450 sq.m",
+        "setbacks": {
+          "front": "6m",
+          "rear": "7.5m", 
+          "side": "1.5m"
+        },
+        "allowedUses": [
+          "Single detached dwelling",
+          "Secondary suite",
+          "Home occupation"
+        ],
+        "color": "#fef3c7"
+      },
+      "R2": {
+        "name": "Duplex Residential",
+        "landUse": "RD",
+        "maxHeight": "10m (2.5 storeys)",
+        "maxFAR": "0.75",
+        "lotCoverage": "40%",
+        "minLotSize": "550 sq.m",
+        "setbacks": {
+          "front": "6m",
+          "rear": "7.5m",
+          "side": "3m"
+        },
+        "allowedUses": [
+          "Single detached dwelling",
+          "Duplex",
+          "Secondary suite",
+          "Home occupation"
+        ],
+        "color": "#fef3c7"
+      },
+      "RM1": {
+        "name": "Multiple Unit Residential Low Density",
+        "landUse": "RM",
+        "maxHeight": "12m (3-4 storeys)",
+        "maxFAR": "1.2",
+        "lotCoverage": "50%",
+        "minLotSize": "800 sq.m",
+        "allowedUses": [
+          "Townhouses",
+          "Rowhouses",
+          "Low-rise apartments",
+          "Secondary suites"
+        ],
+        "color": "#fed7aa"
+      },
+      "RM2": {
+        "name": "Multiple Unit Residential Medium Density",
+        "landUse": "RM",
+        "maxHeight": "18m (5-6 storeys)",
+        "maxFAR": "2.0",
+        "lotCoverage": "60%",
+        "minLotSize": "1000 sq.m",
+        "allowedUses": [
+          "Townhouses",
+          "Stacked townhouses", 
+          "Low-rise apartments",
+          "Mid-rise apartments"
+        ],
+        "color": "#fed7aa"
+      },
+      "RH1": {
+        "name": "High Rise Residential",
+        "landUse": "RH",
+        "maxHeight": "Variable (subject to approval)",
+        "maxFAR": "Variable",
+        "lotCoverage": "Variable",
+        "allowedUses": [
+          "High-rise apartments",
+          "Mixed residential buildings",
+          "Community amenities"
+        ],
+        "color": "#fecaca"
+      }
+    },
+    "commercial": {
+      "C1": {
+        "name": "Neighbourhood Commercial",
+        "landUse": "C",
+        "maxHeight": "12m (3-4 storeys)",
+        "maxFAR": "2.0",
+        "lotCoverage": "80%",
+        "allowedUses": [
+          "Retail stores",
+          "Restaurants",
+          "Personal services",
+          "Professional offices",
+          "Residential (upper floors)"
+        ],
+        "color": "#ddd6fe"
+      },
+      "C2": {
+        "name": "Community Commercial",
+        "landUse": "C", 
+        "maxHeight": "15m (4-5 storeys)",
+        "maxFAR": "3.0",
+        "lotCoverage": "80%",
+        "allowedUses": [
+          "Retail stores",
+          "Restaurants",
+          "Entertainment facilities",
+          "Offices",
+          "Residential (upper floors)"
+        ],
+        "color": "#ddd6fe"
+      },
+      "C3": {
+        "name": "Auto-Oriented Commercial",
+        "landUse": "C",
+        "maxHeight": "10m (2-3 storeys)",
+        "maxFAR": "1.5",
+        "lotCoverage": "70%",
+        "allowedUses": [
+          "Drive-through services",
+          "Auto sales and service",
+          "Large format retail",
+          "Service commercial"
+        ],
+        "color": "#ddd6fe"
+      }
+    },
+    "mixedUse": {
+      "MU1": {
+        "name": "Mixed Use Low Rise",
+        "landUse": "ML",
+        "maxHeight": "18m (5-6 storeys)",
+        "maxFAR": "2.5",
+        "lotCoverage": "70%",
+        "allowedUses": [
+          "Ground floor commercial",
+          "Upper floor residential",
+          "Professional offices",
+          "Community services"
+        ],
+        "requirements": [
+          "Active commercial frontage required",
+          "Minimum commercial space on ground floor"
+        ],
+        "color": "#d1fae5"
+      },
+      "MU2": {
+        "name": "Mixed Use High Rise",
+        "landUse": "MH",
+        "maxHeight": "Variable (subject to approval)",
+        "maxFAR": "Variable",
+        "lotCoverage": "Variable",
+        "allowedUses": [
+          "Ground floor commercial",
+          "Residential",
+          "Offices", 
+          "Community facilities"
+        ],
+        "requirements": [
+          "Active commercial frontage required",
+          "Public benefits required for height"
+        ],
+        "color": "#dcfce7"
+      }
+    },
+    "employment": {
+      "M1": {
+        "name": "Light Industrial",
+        "landUse": "ME",
+        "maxHeight": "15m",
+        "maxFAR": "1.0",
+        "lotCoverage": "70%",
+        "allowedUses": [
+          "Light manufacturing",
+          "Warehousing",
+          "Distribution",
+          "Research and development",
+          "Accessory office"
+        ],
+        "color": "#f1f5f9"
+      },
+      "M2": {
+        "name": "Heavy Industrial", 
+        "landUse": "ME",
+        "maxHeight": "20m",
+        "maxFAR": "1.2",
+        "lotCoverage": "80%",
+        "allowedUses": [
+          "Heavy manufacturing",
+          "Processing",
+          "Storage",
+          "Transportation facilities"
+        ],
+        "restrictions": [
+          "Buffer requirements from residential",
+          "Environmental impact assessments required"
+        ],
+        "color": "#f1f5f9"
+      }
+    },
+    "healthcare": {
+      "HC1": {
+        "name": "Healthcare Commercial",
+        "landUse": "CHC",
+        "maxHeight": "Variable",
+        "maxFAR": "Variable", 
+        "allowedUses": [
+          "Healthcare offices",
+          "Medical research facilities",
+          "Healthcare retail",
+          "Support services"
+        ],
+        "restrictions": [
+          "No residential uses permitted",
+          "Must support Royal Columbian Hospital"
+        ],
+        "color": "#fef7ee"
+      }
+    },
+    "special": {
+      "SGTMC": {
+        "name": "Sapperton Green Transit-Oriented Mixed-Use Community",
+        "landUse": "SGTMC",
+        "maxHeight": "35 storeys (varies by area)",
+        "minHeight": "3 storeys",
+        "floorSpace": {
+          "office": "750,000 sq. ft. minimum",
+          "residential": "3,400,000 sq. ft. maximum",
+          "retail": "150,000 sq. ft."
+        },
+        "openSpace": "15% minimum",
+        "allowedUses": [
+          "High density residential",
+          "Office buildings",
+          "Retail commercial",
+          "Community facilities",
+          "Public open space"
+        ],
+        "requirements": [
+          "Comprehensive Master Plan required",
+          "Public review process",
+          "Active transportation linkages",
+          "Transit integration"
+        ],
+        "color": "#f0f9ff"
+      },
+      "BDMU": {
+        "name": "Brewery District Mixed Use",
+        "landUse": "BDMU",
+        "maxHeight": "Variable",
+        "maxFAR": "Variable",
+        "allowedUses": [
+          "Multiple unit residential",
+          "Healthcare offices and facilities",
+          "Professional offices",
+          "Retail commercial"
+        ],
+        "requirements": [
+          "Must include healthcare facilities",
+          "Active street frontages required"
+        ],
+        "color": "#e0e7ff"
+      }
+    }
+  },
+  "heightLimits": {
+    "lowRise": {
+      "range": "Up to 18m (6 storeys)",
+      "description": "Typical for residential and small commercial buildings",
+      "areas": ["Most residential areas", "Neighbourhood commercial"]
+    },
+    "midRise": {
+      "range": "18m - 35m (6-12 storeys)",
+      "description": "Medium density mixed-use and residential",
+      "areas": ["Mixed-use corridors", "Transit areas"]
+    },
+    "highRise": {
+      "range": "Over 35m (12+ storeys)",
+      "description": "High density developments, subject to special approval",
+      "areas": ["Downtown", "Major development sites", "Transit hubs"]
+    }
+  },
+  "densityMeasures": {
+    "FAR": {
+      "description": "Floor Area Ratio - total building floor area divided by lot area",
+      "examples": {
+        "0.6": "Low density residential (single family)",
+        "1.0-2.0": "Medium density (townhouses, low apartments)",
+        "2.0-4.0": "High density (mid-rise buildings)",
+        "4.0+": "Very high density (high-rise towers)"
+      }
+    },
+    "lotCoverage": {
+      "description": "Percentage of lot that can be covered by buildings",
+      "examples": {
+        "35%": "Single family residential",
+        "50%": "Multiple unit residential",
+        "70%": "Mixed-use buildings",
+        "80%": "Commercial areas"
+      }
+    }
+  },
+  "specialAreas": {
+    "downtownRegionalCentre": {
+      "description": "Regional City Centre designated for high density transit-oriented development",
+      "targetOfficeSpace": "47,913 sq.m by 2041",
+      "features": ["Two SkyTrain stations", "High density office space"]
+    },
+    "frequentTransitDevelopmentAreas": {
+      "stations": ["Sapperton", "Braid", "22nd Street"],
+      "description": "High density development with variety of housing, commercial services, community amenities and employment",
+      "features": ["Transit-oriented development", "Mixed-use focus"]
+    },
+    "uptownLocalCentre": {
+      "description": "Mixed-use node with increased transit service over time",
+      "features": ["Local commercial services", "Medium density residential"]
+    },
+    "specialEmploymentArea": {
+      "location": "Around Royal Columbian Hospital",
+      "description": "Office development within 5-minute walk of hospital",
+      "purpose": "Support IDEA Centre initiative and medical research"
+    }
+  }
+}
