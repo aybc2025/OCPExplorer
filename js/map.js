@@ -51,8 +51,10 @@ function initializeMap() {
 }
 
 function setupMapEvents() {
-    // Handle map clicks
+    // Handle map clicks - prioritize location info over boundary popup
     map.on('click', function(e) {
+        // Prevent boundary layer popup from interfering
+        e.originalEvent.stopPropagation();
         handleMapClick(e);
     });
     
@@ -85,7 +87,7 @@ async function handleMapClick(e) {
     
     currentMarkers.push(marker);
     
-    // Get location information from data handler
+    // Always try to get location information from data handler
     if (window.ocpDataHandler?.isLoaded) {
         try {
             const locationInfo = await window.ocpDataHandler.getLocationInfo(parseFloat(lat), parseFloat(lng));
@@ -119,7 +121,7 @@ function updatePropertyInfoPanel(locationInfo, lat, lng, errorMessage = null) {
     if (!locationInfo) {
         propertyInfo.innerHTML = `
             <div class="property-details">
-                <h3>Location Details</h3>
+                <h3>📍 Location Analysis</h3>
                 <p><strong>Coordinates:</strong><br>
                 <span style="font-family: monospace;">${lat}, ${lng}</span></p>
                 <p><strong>Status:</strong> No data available</p>
@@ -135,13 +137,20 @@ function updatePropertyInfoPanel(locationInfo, lat, lng, errorMessage = null) {
     
     let landUseSection = '';
     if (locationInfo.landUse) {
+        const allowedUses = locationInfo.landUse.principalUses || locationInfo.landUse.allowedUses || [];
+        const usesHtml = allowedUses.length > 0 ? 
+            `<div class="allowed-uses">
+                <h5>Allowed Uses</h5>
+                <ul>${allowedUses.map(use => `<li>${use}</li>`).join('')}</ul>
+            </div>` : '';
+            
         landUseSection = `
             <div class="info-section">
                 <h4>Land Use Designation</h4>
                 <p><strong>${locationInfo.landUse.name} (${locationInfo.landUse.code})</strong></p>
                 <p style="font-size: 0.9em; color: #6b7280;">${locationInfo.landUse.description}</p>
-                <p><strong>Density:</strong> ${locationInfo.landUse.maxDensity || 'Variable'}</p>
-                ${locationInfo.landUse.maxHeight ? `<p><strong>Max Height:</strong> ${locationInfo.landUse.maxHeight}</p>` : ''}
+                <p><strong>Density:</strong> ${locationInfo.landUse.maxDensity || 'Low density residential'}</p>
+                ${usesHtml}
             </div>
         `;
     }
@@ -159,202 +168,156 @@ function updatePropertyInfoPanel(locationInfo, lat, lng, errorMessage = null) {
         `;
     }
     
-    let allowedUsesSection = '';
-    if (locationInfo.landUse?.principalUses) {
-        allowedUsesSection = `
+    let policiesSection = '';
+    if (locationInfo.policies && locationInfo.policies.length > 0) {
+        policiesSection = `
             <div class="info-section">
-                <h4>Allowed Uses</h4>
-                <ul style="font-size: 0.9em; margin-left: 1rem;">
-                    ${locationInfo.landUse.principalUses.slice(0, 4).map(use => `<li>${use}</li>`).join('')}
-                    ${locationInfo.landUse.principalUses.length > 4 ? '<li><em>...and more</em></li>' : ''}
-                </ul>
+                <h4>Relevant Policies</h4>
+                ${locationInfo.policies.map(policy => 
+                    `<p><strong>${policy.id}:</strong> ${policy.title}</p>`
+                ).join('')}
             </div>
         `;
     }
     
-    let policiesSection = '';
-    if (locationInfo.policies?.length > 0) {
-        policiesSection = `
-            <div class="info-section">
-                <h4>Relevant Policies</h4>
-                ${locationInfo.policies.slice(0, 2).map(policy => `
-                    <p style="font-size: 0.85em;"><strong>${policy.id}:</strong> ${policy.title}</p>
-                `).join('')}
+    // Show appropriate message for outside boundary
+    const outsideBoundaryMessage = !locationInfo.withinBoundary ? `
+        <div class="info-section" style="background: #fef3c7; padding: 10px; border-radius: 5px; margin: 10px 0;">
+            <p style="margin: 0; color: #92400e;"><strong>Note:</strong> This location is outside New Westminster city limits. No local zoning or land use information available.</p>
+        </div>
+    ` : '';
+    
+    // Additional actions section
+    const actionsSection = `
+        <div class="info-section">
+            <div class="action-buttons" style="display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px;">
+                <button onclick="searchNearbyAmenities(${lat}, ${lng})" style="flex: 1; min-width: 120px; padding: 6px 12px; background: #3b82f6; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 0.85em;">🔍 Search Nearby</button>
+                <button onclick="getMoreLocationDetails(${lat}, ${lng})" style="flex: 1; min-width: 120px; padding: 6px 12px; background: #10b981; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 0.85em;">📋 More Details</button>
             </div>
-        `;
-    }
+        </div>
+    `;
+    
+    const dataSource = locationInfo.withinBoundary ? 
+        '<p style="font-size: 0.8em; color: #6b7280; margin-top: 15px;"><em>Data from New Westminster Official Community Plan (2017). For development applications, verify with current zoning bylaws.</em></p>' : '';
     
     propertyInfo.innerHTML = `
         <div class="property-details">
             <h3>📍 Location Analysis</h3>
+            <p><strong>Coordinates:</strong><br>
+            <span style="font-family: monospace;">${lat}, ${lng}</span></p>
+            <p><strong>Boundary Status:</strong><br>${boundaryStatus}</p>
             
-            <div class="info-section">
-                <p><strong>Coordinates:</strong><br>
-                <span style="font-family: monospace;">${lat}, ${lng}</span></p>
-                
-                <p><strong>Boundary Status:</strong><br>
-                ${boundaryStatus}</p>
-            </div>
-            
+            ${outsideBoundaryMessage}
             ${landUseSection}
             ${zoningSection}
-            ${allowedUsesSection}
             ${policiesSection}
-            
-            <div class="action-buttons" style="margin-top: 1rem; text-align: center;">
-                <button onclick="searchNearbyAmenities(${lat}, ${lng})" 
-                        class="action-btn" style="background: #3b82f6; color: white; border: none; padding: 0.5rem 1rem; border-radius: 4px; margin: 0.25rem;">
-                    🔍 Search Nearby
-                </button>
-                <button onclick="getMoreLocationDetails(${lat}, ${lng})" 
-                        class="action-btn" style="background: #10b981; color: white; border: none; padding: 0.5rem 1rem; border-radius: 4px; margin: 0.25rem;">
-                    📋 More Details
-                </button>
-            </div>
-            
-            <div class="notice" style="background: #f3f4f6; padding: 8px; border-radius: 4px; margin-top: 12px;">
-                <small><em>Data from New Westminster Official Community Plan (2017). For development applications, verify with current zoning bylaws.</em></small>
-            </div>
+            ${actionsSection}
+            ${dataSource}
         </div>
     `;
 }
 
-// Enhanced search location function with AI integration
-async function searchLocation() {
-    const searchTerm = prompt('Search OCP Explorer:\n\nExamples:\n• "mixed-use buildings near SkyTrain"\n• "residential areas over 6 storeys"\n• "commercial zones downtown"\n• "Royal Columbian Hospital area"\n\nWhat would you like to find?');
-    
-    if (!searchTerm || !searchTerm.trim()) {
-        return;
-    }
-    
-    try {
-        // Show loading state
-        updateSearchLoadingState(true);
-        
-        // Perform search using the new search engine
-        const searchResult = await window.searchOCP(searchTerm, {
-            location: getCurrentMapCenter(),
-            useAI: 'auto',
-            maxResults: 8
-        });
-        
-        // Display results
-        displaySearchResults(searchResult, searchTerm);
-        
-    } catch (error) {
-        console.error('Search error:', error);
-        alert(`Search Error: ${error.message}\n\nPlease try a simpler search or check your internet connection.`);
-    } finally {
-        updateSearchLoadingState(false);
-    }
-}
-
-// Enhanced layer toggle with real data layers
-function toggleLayers() {
-    if (!window.ocpDataHandler?.isLoaded) {
-        alert('Data Layers\n\n⏳ OCP data is still loading...\n\nPlease wait a moment and try again.');
-        return;
-    }
-    
-    const availableLayers = [
-        { key: 'cityBoundary', name: 'City Boundary', enabled: !!cityBoundaryLayer },
-        { key: 'landUse', name: 'Land Use Areas', enabled: !!dataLayers.landUse },
-        { key: 'zoning', name: 'Zoning Districts', enabled: !!dataLayers.zoning },
-        { key: 'heights', name: 'Building Heights', enabled: !!dataLayers.heights },
-        { key: 'transit', name: 'Transit Areas', enabled: !!dataLayers.transit },
-        { key: 'searchResults', name: 'Search Results', enabled: currentSearchResults.length > 0 }
-    ];
-    
-    const layerStatus = availableLayers.map(layer => 
-        `${layer.enabled ? '✓' : '○'} ${layer.name}`
-    ).join('\n');
-    
-    const newLayers = `
-Layer Management:
-
-Current Layers:
-${layerStatus}
-
-Planned Features:
-• Interactive layer controls
-• Color-coded zones
-• Height visualization  
-• Policy overlays
-• Custom layer combinations
-
-Full layer management will be available in the next update.`;
-
-    alert(newLayers);
-}
-
-// Initialize data layers when OCP data is loaded
+// Initialize data layers (placeholder for future features)
 function initializeDataLayers() {
-    console.log('Initializing data layers...');
-    
-    // Create layer groups for different data types
-    dataLayers.landUse = L.layerGroup();
-    dataLayers.zoning = L.layerGroup();
-    dataLayers.heights = L.layerGroup(); 
-    dataLayers.transit = L.layerGroup();
-    dataLayers.searchResults = L.layerGroup();
-    
-    // Add layer control (will be enhanced in future updates)
-    const overlayMaps = {
-        "Land Use Areas": dataLayers.landUse,
-        "Zoning Districts": dataLayers.zoning,
-        "Building Heights": dataLayers.heights,
-        "Transit Areas": dataLayers.transit,
-        "Search Results": dataLayers.searchResults
-    };
-    
-    // Note: Full layer implementation would require GeoJSON boundaries for each zone
-    console.log('Data layers initialized (display pending GeoJSON implementation)');
+    console.log('Data layers ready for initialization');
+    // Future: Add layers for transit, amenities, etc.
 }
 
-// Display search results on map and in panel
-function displaySearchResults(searchResult, originalQuery) {
-    // Clear previous search results
-    if (dataLayers.searchResults) {
-        dataLayers.searchResults.clearLayers();
+// Layer management functions
+function toggleLayers() {
+    const layerMenu = `
+Available Layers:
+• City Boundary ✓ (always visible)
+• Land Use Zones (coming soon)
+• Zoning Districts (coming soon)
+• Transit Routes (coming soon)
+• Parks & Recreation (coming soon)
+
+Layer controls will be added in future updates!
+    `;
+    
+    alert(layerMenu);
+}
+
+// Search functionality
+async function searchLocation() {
+    const query = prompt('Search for location, address, or landmark:');
+    if (!query) return;
+    
+    updateSearchLoadingState(true);
+    
+    // Simulate search - in production would use real geocoding
+    const searchResult = await simulateLocationSearch(query);
+    
+    updateSearchLoadingState(false);
+    
+    if (searchResult.found) {
+        goToLocation(searchResult.lat, searchResult.lng, 16);
+        
+        // Simulate click at the location to show info
+        const fakeEvent = {
+            latlng: { lat: searchResult.lat, lng: searchResult.lng }
+        };
+        handleMapClick(fakeEvent);
     }
-    currentSearchResults = [];
     
-    if (!searchResult.results || searchResult.results.length === 0) {
-        alert(`No Results Found\n\nQuery: "${originalQuery}"\nMethod: ${searchResult.method}\n\nTry:\n• Simplifying your search\n• Using different keywords\n• Searching for general terms like "residential" or "commercial"`);
-        return;
-    }
-    
-    // Build results display
-    let resultText = `Search Results (${searchResult.results.length})\n`;
-    resultText += `Method: ${searchResult.method === 'ai' ? 'AI Assistant' : 'Local Search'}\n`;
-    resultText += `Query: "${originalQuery}"\n\n`;
-    
-    searchResult.results.forEach((result, index) => {
-        resultText += `${index + 1}. ${result.name}\n`;
-        if (result.description && result.description.length < 100) {
-            resultText += `   ${result.description}\n`;
-        }
-        if (result.matchReason) {
-            resultText += `   Match: ${result.matchReason}\n`;
-        }
-        resultText += '\n';
-    });
-    
-    // Show AI answer if available
-    if (searchResult.method === 'ai' && searchResult.aiResponse) {
-        resultText += `\n🤖 AI Assistant Answer:\n${searchResult.aiResponse}`;
-    }
-    
-    if (searchResult.fallback) {
-        resultText += '\n\n⚠️ AI search unavailable, used local search instead.';
+    let resultText = `Search Results for "${query}":\n\n`;
+    if (searchResult.found) {
+        resultText += `📍 Found: ${searchResult.name}\n`;
+        resultText += `Coordinates: ${searchResult.lat}, ${searchResult.lng}\n`;
+        resultText += `Type: ${searchResult.type}\n\n`;
+        resultText += 'Map has been moved to this location.';
+    } else {
+        resultText += `❌ No results found for "${query}"\n\n`;
+        resultText += 'Try searching for:\n';
+        resultText += '• Street addresses (e.g., "123 Main St")\n';
+        resultText += '• Landmarks (e.g., "City Hall", "Pier Park")\n';
+        resultText += '• Neighborhoods (e.g., "Queensborough")\n';
+        resultText += '• Intersections (e.g., "6th & 6th")';
     }
     
     alert(resultText);
     
     // Store results for layer management
     currentSearchResults = searchResult.results;
+}
+
+// Simulate location search (replace with real geocoding service)
+async function simulateLocationSearch(query) {
+    // Simulate API delay
+    await new Promise(resolve => setTimeout(resolve, 1000));
     
-    // TODO: In future update, add visual markers for search results on map
+    // Sample locations in New Westminster
+    const sampleLocations = [
+        { name: 'New Westminster City Hall', lat: 49.2069, lng: -122.9102, type: 'Municipal Building' },
+        { name: 'Pier Park', lat: 49.2019, lng: -122.9059, type: 'Park' },
+        { name: 'Queens Park', lat: 49.2157, lng: -122.9156, type: 'Park' },
+        { name: 'New Westminster Station', lat: 49.2014, lng: -122.9126, type: 'Transit' },
+        { name: 'Royal Columbian Hospital', lat: 49.2144, lng: -122.9021, type: 'Healthcare' },
+        { name: 'Douglas College', lat: 49.2069, lng: -122.9019, type: 'Education' },
+        { name: 'Uptown New Westminster', lat: 49.2206, lng: -122.9126, type: 'Commercial' },
+        { name: 'Queensborough', lat: 49.1899, lng: -122.9406, type: 'Neighborhood' }
+    ];
+    
+    // Simple search logic
+    const lowerQuery = query.toLowerCase();
+    const found = sampleLocations.find(loc => 
+        loc.name.toLowerCase().includes(lowerQuery) ||
+        loc.type.toLowerCase().includes(lowerQuery)
+    );
+    
+    if (found) {
+        return {
+            found: true,
+            ...found,
+            results: [found]
+        };
+    }
+    
+    return {
+        found: false,
+        results: []
+    };
 }
 
 // Helper functions for new features
@@ -393,27 +356,44 @@ async function getMoreLocationDetails(lat, lng) {
         let details = `Detailed Location Report\n`;
         details += `Coordinates: ${lat}, ${lng}\n\n`;
         
-        if (locationInfo.landUse) {
-            details += `LAND USE DESIGNATION:\n`;
-            details += `• Name: ${locationInfo.landUse.name}\n`;
-            details += `• Code: ${locationInfo.landUse.code}\n`;
-            details += `• Category: ${locationInfo.landUse.category}\n`;
-            details += `• Density: ${locationInfo.landUse.maxDensity}\n\n`;
+        if (locationInfo.withinBoundary) {
+            details += `BOUNDARY STATUS: ✓ Within New Westminster\n\n`;
             
-            if (locationInfo.landUse.principalUses) {
-                details += `PRINCIPAL USES:\n`;
-                locationInfo.landUse.principalUses.forEach(use => {
-                    details += `• ${use}\n`;
-                });
+            if (locationInfo.landUse) {
+                details += `LAND USE DESIGNATION:\n`;
+                details += `• Name: ${locationInfo.landUse.name}\n`;
+                details += `• Code: ${locationInfo.landUse.code}\n`;
+                details += `• Category: ${locationInfo.landUse.category}\n`;
+                details += `• Density: ${locationInfo.landUse.maxDensity}\n\n`;
+                
+                if (locationInfo.landUse.principalUses) {
+                    details += `PRINCIPAL USES:\n`;
+                    locationInfo.landUse.principalUses.forEach(use => {
+                        details += `• ${use}\n`;
+                    });
+                    details += '\n';
+                }
+            }
+            
+            if (locationInfo.zoning) {
+                details += `ZONING INFORMATION:\n`;
+                details += `• Zone: ${locationInfo.zoning.name}\n`;
+                if (locationInfo.zoning.maxHeight) details += `• Max Height: ${locationInfo.zoning.maxHeight}\n`;
+                if (locationInfo.zoning.maxFAR) details += `• Max FAR: ${locationInfo.zoning.maxFAR}\n`;
+                if (locationInfo.zoning.lotCoverage) details += `• Lot Coverage: ${locationInfo.zoning.lotCoverage}\n`;
                 details += '\n';
             }
-        }
-        
-        if (locationInfo.policies?.length > 0) {
-            details += `RELEVANT POLICIES:\n`;
-            locationInfo.policies.forEach(policy => {
-                details += `• ${policy.id}: ${policy.title}\n`;
-            });
+            
+            if (locationInfo.policies?.length > 0) {
+                details += `RELEVANT POLICIES:\n`;
+                locationInfo.policies.forEach(policy => {
+                    details += `• ${policy.id}: ${policy.title}\n`;
+                });
+            }
+        } else {
+            details += `BOUNDARY STATUS: ✗ Outside New Westminster city limits\n\n`;
+            details += `This location is not within New Westminster's jurisdiction.\n`;
+            details += `Local zoning and land use regulations do not apply here.`;
         }
         
         alert(details);
@@ -446,21 +426,10 @@ async function loadCityBoundary() {
                     fillOpacity: 0.1
                 };
             },
+            // Remove popup to prevent interference with location info
             onEachFeature: function(feature, layer) {
-                if (feature.properties) {
-                    const props = feature.properties;
-                    layer.bindPopup(`
-                        <div style="font-family: system-ui; min-width: 200px;">
-                            <h3 style="margin-bottom: 8px; color: #1e40af;">
-                                ${props.FULL_NAME || 'New Westminster'}
-                            </h3>
-                            <p><strong>Area:</strong> ${formatArea(props.SHAPE__Area)}</p>
-                            <p><strong>Perimeter:</strong> ${formatLength(props.SHAPE__Length)}</p>
-                            <p><strong>District:</strong> ${props.DIST_LABEL || 'N/A'}</p>
-                            <p><small>Object ID: ${props.OBJECTID}</small></p>
-                        </div>
-                    `);
-                }
+                // Don't add popup - let handleMapClick handle all interactions
+                // This prevents the boundary popup from interfering
             }
         }).addTo(map);
         
@@ -570,7 +539,12 @@ function addCustomMarker(lat, lng, popupContent) {
 }
 
 function checkIfWithinBoundary(lat, lng) {
-    // Simplified boundary check - in production would use proper GIS
+    // Use the data handler's precise boundary check
+    if (window.ocpDataHandler?.isLoaded) {
+        return window.ocpDataHandler.isWithinNewWestminster(lat, lng);
+    }
+    
+    // Fallback to simple bounds check
     return lat >= 49.19 && lat <= 49.23 && lng >= -122.95 && lng <= -122.88;
 }
 
