@@ -1,0 +1,423 @@
+/* Responsive Design for OCP Explorer */
+
+/* Mobile-First Approach - Base styles for mobile */
+
+/* Extra Small Devices (phones, 320px and up) */
+@media (max-width: 480px) {
+    .header {
+        padding: 0.75rem 1rem;
+    }
+    
+    .header h1 {
+        font-size: 1.25rem;
+        margin-bottom: 0.25rem;
+    }
+    
+    .header p {
+        font-size: 0.8rem;
+    }
+    
+    .app-container {
+        flex-direction: column;
+        height: auto;
+    }
+    
+    .sidebar {
+        width: 100%;
+        order: 2;
+        max-height: 250px;
+        border-right: none;
+        border-top: 2px solid #e5e7eb;
+    }
+    
+    .sidebar-content {
+        padding: 1rem;
+        max-height: 200px;
+        overflow-y: auto;
+    }
+    
+    .sidebar h2 {
+        font-size: 1rem;
+        margin-bottom: 0.75rem;
+    }
+    
+    .map-container {
+        order: 1;
+        height: 350px;
+        min-height: 350px;
+    }
+    
+    .map-controls {
+        top: 0.5rem;
+        right: 0.5rem;
+        flex-direction: row;
+        gap: 0.25rem;
+    }
+    
+    .control-btn {
+        min-width: 60px;
+        padding: 0.5rem 0.75rem;
+        font-size: 0.75rem;
+    }
+    
+    .control-btn span {
+        font-size: 0.9rem;
+    }
+    
+    .footer {
+        padding: 0.75rem;
+        font-size: 0.75rem;
+    }
+    
+    /* Property info adjustments */
+    #property-info {
+        padding: 0.75rem;
+        margin-bottom: 1rem;
+    }
+    
+    .property-details h3 {
+        font-size: 1rem;
+        margin-bottom: 0.5rem;
+    }
+    
+    .info-section {
+        margin-bottom: 0.75rem;
+    }
+    
+    .info-section p {
+        font-size: 0.85rem;
+        margin-bottom: 0.5rem;
+    }
+    
+    /* Map legend adjustments */
+    .map-legend {
+        bottom: 0.5rem;
+        left: 0.5rem;
+        padding: 0.5rem;
+        font-size: 0.7rem;
+        max-width: 120px;
+    }
+    
+    .legend-color {
+        width: 10px;
+        height: 10px;
+        margin-right: 0.25rem;
+    }
+}
+
+/* Small Devices (landscape phones, tablets, 481px and up) */
+@media (min-width: 481px) and (max-width: 768px) {
+    .header {
+        padding: 1rem 1.5rem;
+    }
+    
+    .header h1 {
+        font-size: 1.5rem;
+    }
+    
+    .header p {
+        font-size: 0.9rem;
+    }
+    
+    .app-container {
+        flex-direction: column;
+    }
+    
+    .sidebar {
+        width: 100%;
+        order: 2;
+        max-height: 300px;
+        border-right: none;
+        border-top: 2px solid #e5e7eb;
+    }
+    
+    .sidebar-content {
+        padding: 1.25rem;
+        max-height: 250px;
+        overflow-y: auto;
+    }
+    
+    .map-container {
+        order: 1;
+        height: 400px;
+    }
+    
+    .map-controls {
+        top: 0.75rem;
+        right: 0.75rem;
+        flex-direction: row;
+        gap: 0.5rem;
+    }
+    
+    .control-btn {
+        min-width: 80px;
+        padding: 0.625rem 1rem;
+        font-size: 0.85rem;
+    }
+    
+    .map-legend {
+        bottom: 0.75rem;
+        left: 0.75rem;
+        padding: 0.75rem;
+        font-size: 0.8rem;
+        max-width: 160px;
+    }
+}
+
+/* Medium Devices (small laptops, 769px and up) */
+@media (min-width: 769px) and (max-width: 1024px) {
+    .sidebar {
+        width: 300px;
+    }
+    
+    .header h1 {
+        font-size: 1.75rem;
+    }
+    
+    .map-controls {
+        flex-direction: column;
+    }
+    
+    .control-btn {
+        min-width: 100px;
+    }
+}
+
+/* Large Devices (desktops, 1025px and up) */
+@media (min-width: 1025px) {
+    .sidebar {
+        width: 350px;
+    }
+    
+    .app-container {
+        max-width: 1400px;
+        margin: 0 auto;
+    }
+    
+    .header-content {
+        max-width: 1400px;
+    }
+}
+
+/* Extra Large Devices (large desktops, 1441px and up) */
+@media (min-width: 1441px) {
+    .sidebar {
+        width: 400px;
+    }
+    
+    .sidebar-content {
+        padding: 2rem;
+    }
+    
+    .header h1 {
+        font-size: 2.25rem;
+    }
+    
+    .header p {
+        font-size: 1.1rem;
+    }
+}
+
+/* Landscape Orientation Adjustments */
+@media (orientation: landscape) and (max-height: 600px) {
+    .app-container {
+        flex-direction: row;
+    }
+    
+    .sidebar {
+        width: 300px;
+        max-height: none;
+        order: 1;
+        border-top: none;
+        border-right: 1px solid #e5e7eb;
+    }
+    
+    .map-container {
+        order: 2;
+        height: calc(100vh - 140px);
+    }
+    
+    .header {
+        padding: 0.5rem 1rem;
+    }
+    
+    .header h1 {
+        font-size: 1.25rem;
+        margin-bottom: 0.25rem;
+    }
+    
+    .header p {
+        font-size: 0.8rem;
+    }
+    
+    .footer {
+        padding: 0.5rem;
+        font-size: 0.75rem;
+    }
+}
+
+/* Touch-Specific Adjustments */
+@media (hover: none) and (pointer: coarse) {
+    .control-btn {
+        padding: 0.875rem 1.125rem;
+        min-height: 44px; /* Minimum touch target size */
+        min-width: 44px;
+    }
+    
+    .control-btn:hover {
+        transform: none; /* Disable hover effects on touch devices */
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    }
+    
+    .control-btn:active {
+        transform: scale(0.95);
+        background: #f3f4f6;
+    }
+    
+    /* Larger touch targets for map legend */
+    .legend-item {
+        padding: 0.25rem 0;
+        margin-bottom: 0.5rem;
+    }
+}
+
+/* High DPI / Retina Display Adjustments */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+    .legend-color {
+        border-width: 0.5px; /* Thinner borders on high DPI displays */
+    }
+    
+    .control-btn {
+        border-width: 0.5px;
+    }
+}
+
+/* Reduced Motion Accessibility */
+@media (prefers-reduced-motion: reduce) {
+    .control-btn {
+        transition: none;
+    }
+    
+    .loading-spinner {
+        animation: none;
+    }
+    
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}
+
+/* Dark Mode Support */
+@media (prefers-color-scheme: dark) {
+    .sidebar {
+        background: #1f2937;
+        border-color: #374151;
+        color: #f9fafb;
+    }
+    
+    .sidebar h2 {
+        color: #f9fafb;
+        border-color: #374151;
+    }
+    
+    #property-info {
+        background: #374151;
+        border-color: #4b5563;
+        color: #e5e7eb;
+    }
+    
+    .placeholder-text {
+        color: #9ca3af;
+    }
+    
+    .control-btn {
+        background: #374151;
+        border-color: #4b5563;
+        color: #f9fafb;
+    }
+    
+    .control-btn:hover {
+        background: #4b5563;
+        border-color: #6b7280;
+    }
+    
+    .map-legend {
+        background: rgba(31, 41, 55, 0.95);
+        border-color: #374151;
+        color: #e5e7eb;
+    }
+    
+    .footer {
+        background: #1f2937;
+        color: #9ca3af;
+        border-color: #374151;
+    }
+}
+
+/* Print Styles */
+@media print {
+    .sidebar,
+    .map-controls,
+    .footer {
+        display: none;
+    }
+    
+    .map-container {
+        width: 100%;
+        height: 80vh;
+    }
+    
+    .header {
+        background: white;
+        color: black;
+        box-shadow: none;
+        border-bottom: 2px solid #000;
+    }
+}
+
+/* Focus Styles for Accessibility */
+.control-btn:focus {
+    outline: 2px solid #3b82f6;
+    outline-offset: 2px;
+}
+
+.sidebar:focus-within {
+    border-color: #3b82f6;
+}
+
+/* Loading States for Mobile */
+@media (max-width: 768px) {
+    .loading-indicator {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 9999;
+        background: rgba(255, 255, 255, 0.95);
+        padding: 1rem;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+}
+
+/* Utility Classes for Responsive Behavior */
+.mobile-only {
+    display: block;
+}
+
+.desktop-only {
+    display: none;
+}
+
+@media (min-width: 769px) {
+    .mobile-only {
+        display: none;
+    }
+    
+    .desktop-only {
+        display: block;
+    }
+}
